@@ -40,7 +40,7 @@ class Moving():
                 return False
 
     def CountWallDis(self,point,x,y,phi):
-        print("==Call_CountWallDis==")  
+         
         minDis=3000.0
         minxm=0.0
         minym=0.0
@@ -66,5 +66,5 @@ class Moving():
                     minxm = xm
                     minym = ym    
 
-        print("***Min xm,ym,Dis = ",minxm,minym,minDis)
+        
         return minDis
