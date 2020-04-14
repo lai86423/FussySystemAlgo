@@ -5,10 +5,13 @@ import tkinter as tk
 import math
 from fussySys import fussySystem
 from carMoving import Moving
-class Draw():
+class Application():
     def __init__(self): 
         self.fig, self.ax = plt.subplots(1, 1, figsize=(4.5, 6))
         self.point = [[-6,-3],[-6,22],[18,22],[18,50],[30,50],[30,10],[6,10],[6,-3],[-6,-3]]
+        self.DrawMap() 
+        self.Main()
+
     def DrawMap(self):
         plt.xlim(-10, 35 ,1)
         plt.ylim(-10,55,1)
@@ -29,17 +32,12 @@ class Draw():
         self.ax.add_artist(self.circle)
         self.line = self.ax.plot([posX,posX+(math.cos(phi / 180 * math.pi))*4],[posY,posY+math.sin(phi / 180 * math.pi)*4], 'r')
 
-if __name__ == "__main__":
-
-        print("================================Start From here================================")   
-        fig=Draw()  
-        point=fig.point 
-        fig.DrawMap()    
+    def Main(self):
+        print("================================Start From here================================")      
         car = Moving(0,0,90)
         x,y,phi=car.x,car.y,car.phi
         plt.ion()
-        plt.show()
-        
+        plt.show()        
         fussySys=fussySystem()
         steerDegree=10
 
@@ -47,11 +45,11 @@ if __name__ == "__main__":
             if(car.DetectWall()!=False):
                 x,y,phi = car.UpdataPos(steerDegree)
                 print("-------x,y,phi=",x,y,phi)
-                F_minDis=car.CountWallDis(point,x,y,phi)
+                F_minDis=car.CountWallDis(self.point,x,y,phi)
                 print("Mid_minDis",F_minDis)
-                R_minDis=car.CountWallDis(point,x,y,phi-45)
+                R_minDis=car.CountWallDis(self.point,x,y,phi-45)
                 print("Right_minDis",R_minDis)
-                L_minDis=car.CountWallDis(point,x,y,phi+45)
+                L_minDis=car.CountWallDis(self.point,x,y,phi+45)
                 print("Left_minDis",L_minDis)
                 #模糊系統-----
                 all_FS = fussySys.FiringStrength(R_minDis-L_minDis,F_minDis)
@@ -63,10 +61,13 @@ if __name__ == "__main__":
                     steerDegree = - steerDegree
                 print("steerDegree=",steerDegree)
 
-            fig.DrawCar(x,y,phi)
+            self.DrawCar(x,y,phi)
             plt.show()
             plt.pause(0.1)
-            fig.circle.remove()
-            #fig.line.remove()  #待解 移除圓的線
+            self.circle.remove()
+            #self.line.remove()  #待解 移除圓的線
         plt.pause(0)
+
+if __name__ == "__main__":
+    Application()
             
