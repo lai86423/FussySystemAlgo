@@ -31,9 +31,15 @@ class Application():
         self.ax.plot([-7, 7], [0,0 ], 'k')
 
     def DrawCar(self,posX,posY,phi):
+        global lines
+        try:
+            self.circle.remove()
+            self.ax.lines.remove(lines[0])
+        except Exception:
+            pass
         self.circle=plt.Circle((posX,posY),3, color='r', fill=False)
         self.ax.add_artist(self.circle)
-        self.line = self.ax.plot([posX,posX+(math.cos(phi / 180 * math.pi))*4],[posY,posY+math.sin(phi / 180 * math.pi)*4], 'r')
+        lines = self.ax.plot([posX,posX+(math.cos(phi / 180 * math.pi))*4],[posY,posY+math.sin(phi / 180 * math.pi)*4], 'r')
 
 def Main():
     print("================================Start From here================================")      
@@ -44,7 +50,8 @@ def Main():
     plt.show()        
     fussySys=fussySystem()
     steerDegree=10
-
+    f = open("train4D.txt",'w')
+        
     while (car.DetectWall()!=False):
         x,y,phi = car.UpdataPos(steerDegree)
         
@@ -68,9 +75,7 @@ def Main():
         # print(self.F_minDis,self.R_minDis,self.L_minDis,steerDegree,file=data)
         # print("\n",file=data)                
         # data.close()
-        #f = open("train4D.txt",'a')
-        #f.write('asd')
-        #f.close()
+        f.writelines(str(F_minDis)+','+str(R_minDis)+','+str(L_minDis)+','+str(steerDegree)+'\n')
         
         draw.DrawCar(x,y,phi)
         plt.show()
@@ -78,10 +83,11 @@ def Main():
         print(F_minDis)
         var.set(F_minDis)
         #ShowDis_label1.config(text=round(F_minDis))
-        draw.circle.remove()
+        # draw.circle.remove()
+        # draw.ax.lines.remove(lines[0])
         #self.line.remove()  #待解 移除圓的線
     plt.pause(0)
-       
+    f.close()   
 #GUI
 #介面基本設定
 window= tk.Tk()
