@@ -5,7 +5,7 @@ from tkinter import *
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-from fussySys import fussySystem
+from fuzzySys import fuzzySystem
 from carMoving import Moving
 
 class Application():
@@ -48,7 +48,7 @@ def Main():
     x,y,phi=car.x,car.y,car.phi
     plt.ion()
     plt.show()        
-    fussySys=fussySystem()
+    fuzzySys=fuzzySystem()
     steerDegree=10
     f = open("train4D.txt",'w')
     f2 = open("train6D.txt",'w')    
@@ -60,9 +60,9 @@ def Main():
         L_minDis=round(car.CountWallDis(draw.point,x,y,phi+45),7)
         
         #模糊系統-----
-        all_FS = fussySys.FiringStrength(R_minDis-L_minDis,F_minDis)        
-        output=fussySys.Defuzzification(all_FS)       
-        steerDegree = fussySys.CenterOfGravity(output)
+        all_FS = fuzzySys.FiringStrength(R_minDis-L_minDis,F_minDis)        
+        output=fuzzySys.Defuzzification(all_FS)       
+        steerDegree = fuzzySys.CenterOfGravity(output)
         if R_minDis-L_minDis<0:
             steerDegree = - steerDegree
 
@@ -87,15 +87,14 @@ def Main():
 #介面基本設定
 window= tk.Tk()
 window.geometry('200x200')
-window.title('HW1-FussySystem')
+window.title('HW1-FuzzySystem')
 
-label_top = tk.Label(window,text = "Reading Trail file : ")
+label_top = tk.Label(window,text = "Reading Track File : ")
 label_top.pack()         
 label_right = tk.Label(window,text = "case01.txt",fg="red")
 label_right.pack() 
 
 #開始訓練按鈕
-
 
 Dis_frame = tk.Frame(window)
 Dis_frame.pack(side=tk.TOP)
