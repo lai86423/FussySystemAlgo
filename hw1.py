@@ -55,12 +55,12 @@ def Main():
     while (car.DetectWall()!=False):
         x,y,phi = car.UpdataPos(steerDegree)
         
-        F_minDis=car.CountWallDis(draw.point,x,y,phi)
+        F_minDis=round(car.CountWallDis(draw.point,x,y,phi),3)
         
         
-        R_minDis=car.CountWallDis(draw.point,x,y,phi-45)
+        R_minDis=round(car.CountWallDis(draw.point,x,y,phi-45),3)
         
-        L_minDis=car.CountWallDis(draw.point,x,y,phi+45)
+        L_minDis=round(car.CountWallDis(draw.point,x,y,phi+45),3)
         
         #模糊系統-----
         all_FS = fussySys.FiringStrength(R_minDis-L_minDis,F_minDis)
@@ -70,22 +70,19 @@ def Main():
         steerDegree = fussySys.CenterOfGravity(output)
         if R_minDis-L_minDis<0:
             steerDegree = - steerDegree
-        
-        # data=open("train4D.txt",'w+') 
-        # print(self.F_minDis,self.R_minDis,self.L_minDis,steerDegree,file=data)
-        # print("\n",file=data)                
-        # data.close()
+       
         f.writelines(str(F_minDis)+','+str(R_minDis)+','+str(L_minDis)+','+str(steerDegree)+'\n')
         
         draw.DrawCar(x,y,phi)
         plt.show()
         plt.pause(0.1)
-        print(F_minDis)
+        print("F_minDis",F_minDis)
         var.set(F_minDis)
-        #ShowDis_label1.config(text=round(F_minDis))
-        # draw.circle.remove()
-        # draw.ax.lines.remove(lines[0])
-        #self.line.remove()  #待解 移除圓的線
+        print("R_minDis",R_minDis)
+        var2.set(R_minDis)
+        print("L_minDis",L_minDis)
+        var3.set(L_minDis)
+       
     plt.pause(0)
     f.close()   
 #GUI
@@ -94,8 +91,10 @@ window= tk.Tk()
 window.geometry('200x200')
 window.title('HW1-FussySystem')
 
-label_top = tk.Label(window,text = "Choose Trail file")
+label_top = tk.Label(window,text = "Reading Trail file : ")
 label_top.pack()         
+label_right = tk.Label(window,text = "case01.txt",fg="red")
+label_right.pack() 
 
 #開始訓練按鈕
 
@@ -103,14 +102,32 @@ label_top.pack()
 Dis_frame = tk.Frame(window)
 Dis_frame.pack(side=tk.TOP)
 
-Dis_label1 = tk.Label(Dis_frame,text='Front Distance')
-Dis_label1.pack(side=tk.LEFT)
+button_start = tk.Button(Dis_frame,text='Run',command=Main)
+button_start.pack(side=tk.TOP)
 
+
+Dis_frame1 = tk.Frame(window)
+Dis_frame1.pack(side=tk.TOP)
+Dis_label1 = tk.Label(Dis_frame1,text='Front Distance')
+Dis_label1.pack(side=tk.LEFT)
 var = tk.StringVar()
-ShowDis_label1 = tk.Label(Dis_frame, textvariable=var)
+ShowDis_label1 = tk.Label(Dis_frame1, textvariable=var)
 ShowDis_label1.pack(side=tk.LEFT)
 
-button_start = tk.Button(window,text='開始',command=Main)
-button_start.pack()
+Dis_frame2 = tk.Frame(window)
+Dis_frame2.pack(side=tk.TOP)
+Dis_label2 = tk.Label(Dis_frame2,text='Right Distance')
+Dis_label2.pack(side=tk.LEFT)
+var2 = tk.StringVar()
+ShowDis_label2 = tk.Label(Dis_frame2, textvariable=var2)
+ShowDis_label2.pack(side=tk.LEFT)
+
+Dis_frame3 = tk.Frame(window)
+Dis_frame3.pack(side=tk.TOP)
+Dis_label3 = tk.Label(Dis_frame3,text='Left Distance')
+Dis_label3.pack(side=tk.LEFT)
+var3 = tk.StringVar()
+ShowDis_label3 = tk.Label(Dis_frame3, textvariable=var3)
+ShowDis_label3.pack(side=tk.LEFT)
 
 window.mainloop()
