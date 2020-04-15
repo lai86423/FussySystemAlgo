@@ -51,29 +51,23 @@ def Main():
     fussySys=fussySystem()
     steerDegree=10
     f = open("train4D.txt",'w')
-        
+    f2 = open("train6D.txt",'w')    
     while (car.DetectWall()!=False):
         x,y,phi = car.UpdataPos(steerDegree)
         
-        F_minDis=round(car.CountWallDis(draw.point,x,y,phi),3)
-        
-        
-        R_minDis=round(car.CountWallDis(draw.point,x,y,phi-45),3)
-        
-        L_minDis=round(car.CountWallDis(draw.point,x,y,phi+45),3)
+        F_minDis=round(car.CountWallDis(draw.point,x,y,phi),7)
+        R_minDis=round(car.CountWallDis(draw.point,x,y,phi-45),7)       
+        L_minDis=round(car.CountWallDis(draw.point,x,y,phi+45),7)
         
         #模糊系統-----
-        all_FS = fussySys.FiringStrength(R_minDis-L_minDis,F_minDis)
-        
-        output=fussySys.Defuzzification(all_FS)
-        
+        all_FS = fussySys.FiringStrength(R_minDis-L_minDis,F_minDis)        
+        output=fussySys.Defuzzification(all_FS)       
         steerDegree = fussySys.CenterOfGravity(output)
         if R_minDis-L_minDis<0:
             steerDegree = - steerDegree
-       
-        f.writelines(str(F_minDis)+','+str(R_minDis)+','+str(L_minDis)+','+str(steerDegree)+'\n')
-        
+
         draw.DrawCar(x,y,phi)
+        print("x,y,phi = ",x,y,phi)
         plt.show()
         plt.pause(0.1)
         print("F_minDis",F_minDis)
@@ -82,9 +76,13 @@ def Main():
         var2.set(R_minDis)
         print("L_minDis",L_minDis)
         var3.set(L_minDis)
+
+        f.writelines(str(F_minDis)+' '+str(R_minDis)+' '+str(L_minDis)+' '+str(steerDegree)+'\n')
+        f2.writelines(str(round(x,7))+' '+str(round(y,7))+' '+str(F_minDis)+' '+str(R_minDis)+' '+str(L_minDis)+' '+str(steerDegree)+'\n')
        
     plt.pause(0)
     f.close()   
+    f2.close()
 #GUI
 #介面基本設定
 window= tk.Tk()
