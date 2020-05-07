@@ -34,7 +34,7 @@ class Application():
         global lines
         try:
             self.circle.remove()
-            self.ax.lines.remove(lines[0])
+            #self.ax.lines.remove(lines[0])
         except Exception:
             pass
         self.circle=plt.Circle((posX,posY),3, color='r', fill=False)
@@ -43,13 +43,14 @@ class Application():
 
 def Main():
     print("================================Start From here================================")      
-    draw=Application()
     car=Moving(0,0,90)
     x,y,phi=car.x,car.y,car.phi
     plt.ion()
     plt.show()        
     fuzzySys=fuzzySystem()
     steerDegree=10
+    draw=Application()
+    
     f = open("train4D.txt",'w')
     f2 = open("train6D.txt",'w')    
     while (car.DetectWall()!=False):

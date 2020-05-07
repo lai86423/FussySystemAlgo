@@ -28,16 +28,16 @@ class Moving():
                 return False
             else:
                 self.canMove = True
-        elif self.y<30-3:
+        elif self.y<40:
             if(self.x<=18+3 or self.x>=30-3):
                 self.canMove = False
                 return False
             else:
                 self.canMove = True
         else:
-            if(self.x<=18+3 or self.x>=30-3):
-                self.canMove = False
-                return False
+            self.canMove = False
+            return False
+            
 
     def CountWallDis(self,point,x,y,phi):
          
